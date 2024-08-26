@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,24 @@ public class BoardRepositoryTest {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void updateByIdV2_test() {
+        // given
+        int id = 1;
+        Board board = boardRepository.findById(id);
+
+        // when
+        board.setTitle("제목10");
+        board.setContent("내용10");
+
+        // 트랜잭션 종료시 flush() 발동
+        em.flush(); // 현재 변경 상태를 확인해서 알아서 쿼리를 만들어서 전달하거라
+        // em.persist(board); // 영속객체라 insert됨
+    }
 
     @Test
     public void findByIdV3_test(){

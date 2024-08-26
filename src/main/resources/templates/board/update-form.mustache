@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header"><b>글 수정하기 화면입니다</b></div>
         <div class="card-body">
-            <form action="/board/{{model.id}}/update" method="post">
+            <form action="/api/board/{{model.id}}/update" method="post">
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Enter title" name="title"
                            value="{{model.title}}">

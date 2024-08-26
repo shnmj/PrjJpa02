@@ -16,6 +16,31 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
+    @Transactional
+    public void 게시글수정(int id, BoardRequest.UpdateDTO updateDTO, User sessionUser) {
+        // 1. 게시글 조회 (없으면 404)
+        Board board = boardRepository.findById(id);
+
+        // 2. 권한 체크
+        if(board.getUser().getId() != sessionUser.getId()) {
+            throw new Exception403("게시글 수정 권한이 없습니다."); // try catch
+        }
+
+        // 3. 게시글 수정
+        board.setTitle(updateDTO.getTitle());
+        board.setContent(updateDTO.getContent());
+    }  // 트랜잭션 종료시 flush() 자동 호출 -> dirty checking
+
+    public Board 게시글수정화면(int id, User sessionUser) {
+        Board board = boardRepository.findById(id);  // return null로 하면 if null로 처리. but 여기선 404 터뜨림
+
+        if(board.getUser().getId() != sessionUser.getId()) {
+            throw new Exception403("게시글 수정 권한이 없습니다."); // try catch
+        }
+
+        return board;
+    }
+
     public List<Board> 게시글목록보기() {  // 페이징 처리
         List<Board> boardList = boardRepository.findAll();
         return boardList;
@@ -44,7 +69,7 @@ public class BoardService {
     }
 
     public BoardResponse.DetailDTO 상세보기(int id, User sessionUser) {
-        Board board = boardRepository.findById(id); // 조인 (Board - User)
+        Board board = boardRepository.findById(id); // Join (Board - User)
         return new BoardResponse.DetailDTO(board, sessionUser);
     }
 }

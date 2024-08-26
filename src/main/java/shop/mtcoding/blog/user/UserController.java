@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.core.Hello;
 
 @RequiredArgsConstructor // final이 붙은 애들의 생성자를 생성
 @Controller
@@ -16,14 +17,14 @@ public class UserController {
     @GetMapping("/logout")  // 세션을 무효화하여 로그아웃 처리
     public String logout() {
         session.invalidate();
-        return "redirect:/board";
+        return "redirect:/";
     }
 
     @PostMapping("/login")  // 유저가 입력한 username과 password로 유저 조회해서 세션에 저장
     public String login(UserRequest.LoginDTO loginDTO) {
         User sessionUser = userService.로그인(loginDTO); // 세션유저를 받아야 해서 필요
         session.setAttribute("sessionUser", sessionUser);
-        return "redirect:/board";
+        return "redirect:/";
     }
 
     @PostMapping("/join")
@@ -37,8 +38,11 @@ public class UserController {
         return "user/join-form";
     }
 
+    @Hello
     @GetMapping("/login-form")
     public String loginForm() {
+        System.out.println("login-form 호출됨 ===================");
         return "user/login-form";
     }
+
 }
