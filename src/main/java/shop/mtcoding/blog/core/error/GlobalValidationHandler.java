@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import shop.mtcoding.blog.core.error.ex.Exception400;
 
 @Component
@@ -21,7 +22,10 @@ public class GlobalValidationHandler {
                 Errors errors = (Errors) arg;
 
                 if(errors.hasErrors()) { // 에러가 있으면 true 뜸
-                    throw new Exception400("유효성 검사 실패입니다."); // title이나 content 중 하나만 작성후 완료버튼 클릭시 발동
+                    for(FieldError error : errors.getFieldErrors()) {
+                        throw new Exception400(error.getDefaultMessage()+ " : " +error.getField()); // title이나 content 중 하나만 작성후 완료버튼 클릭시 발동
+
+                    }
                 }
             }
         }

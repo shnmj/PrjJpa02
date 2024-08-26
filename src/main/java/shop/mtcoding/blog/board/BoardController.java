@@ -33,7 +33,7 @@ public class BoardController {
 
 
     @PostMapping("/api/board/{id}/delete")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable("id") int id, @Valid BoardRequest.UpdateDTO updateDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardService.게시글삭제(id, sessionUser);
         return "redirect:/";

@@ -1,8 +1,10 @@
 package shop.mtcoding.blog.user;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.mtcoding.blog.core.Hello;
@@ -21,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/login")  // 유저가 입력한 username과 password로 유저 조회해서 세션에 저장
-    public String login(UserRequest.LoginDTO loginDTO) {
+    public String login(@Valid UserRequest.LoginDTO loginDTO, Errors errors) {
         User sessionUser = userService.로그인(loginDTO); // 세션유저를 받아야 해서 필요
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";

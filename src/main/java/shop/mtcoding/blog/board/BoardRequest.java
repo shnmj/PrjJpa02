@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import shop.mtcoding.blog.user.User;
 
@@ -8,7 +9,9 @@ public class BoardRequest {
 
     @Data
     public static class UpdateDTO {  // 요청 DTO는 동일해도 중복해서 생성 ->
+        @NotEmpty
         private String title;
+        @NotEmpty
         private String content;
 
     }
